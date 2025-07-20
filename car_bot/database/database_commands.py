@@ -36,6 +36,7 @@ def parsing_data():
                         break
             if all_empty:
                 continue
+        
         cursor.execute(
             "INSERT INTO dashcams VALUES (?, ?, ?, ?, ?, ?, ?);",
             (data[0], data[1], data[2], data[3], data[4], data[5], data[6])
@@ -48,7 +49,8 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
     connect = sqlite3.connect(FULL_DB_NAME)
     cursor = connect.cursor()
     return_array = []
-    #fetch marque
+    
+    # fetch marque
     if (
         marque_option == "marque" and 
         model_option is None and 
@@ -56,7 +58,8 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
     ):
         cursor.execute("SELECT marque FROM dashcams")
         return_array = [row[0] for row in cursor.fetchall()]
-    #fetch model
+    
+    # fetch model
     elif (
         marque_option is not None and 
         model_option == "model" and 
@@ -67,7 +70,8 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option,)
         )
         return_array = [row[0] for row in cursor.fetchall()]
-    #fetch series and publish year
+    
+    # fetch series and publish_year
     elif (
         marque_option is not None and 
         model_option is not None and 
@@ -79,6 +83,7 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option, model_option)
         )
         return_array = [row[0] for row in cursor.fetchall()]
+    
     # fetch dashcam and photos
     elif (
         marque_option is not None and 
@@ -92,6 +97,7 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option, model_option, series_publish_year_option)
         )
         return_array = [row for row in cursor.fetchall()]
+    
     connect.commit()
     connect.close()
     return return_array
