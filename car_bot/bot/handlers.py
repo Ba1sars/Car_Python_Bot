@@ -39,50 +39,54 @@ async def ans_to(message: Message):
 
 @router.callback_query(F.data.startswith("marque_"))
 async def marque(callback: CallbackQuery, state: FSMContext):
-    await state.update_data(user_marque = callback.data.split("_")[-1])
+    await state.update_data(user_marque=callback.data.split("_")[-1])
     user_data = await state.get_data()
-    await callback.answer(f"Вы выбрали марку машины - {user_data["user_marque"]}")
-    await callback.message.edit_text("Теперь выберите модель машины:",
-                                     reply_markup = await kb.inline_model_buttons(state))
+    await callback.answer(f'Вы выбрали марку машины - {user_data["user_marque"]}')
+    await callback.message.edit_text(
+        "Теперь выберите модель машины:",
+        reply_markup=await kb.inline_model_buttons(state)
+    )
 
 
 @router.callback_query(F.data.startswith("model_"))
 async def model(callback: CallbackQuery, state: FSMContext):
     await state.set_state(User_Dashcam.user_model)
-    await state.update_data(user_model = callback.data.split("_")[-1])
+    await state.update_data(user_model=callback.data.split("_")[-1])
     user_data = await state.get_data()
-    await callback.answer(f"Вы выбрали модель машины - {user_data["user_model"]}")
-    await callback.message.edit_text("Теперь выберите серию:",
-                                     reply_markup = await kb.inline_series_with_publish_year_buttons(state))
+    await callback.answer(f'Вы выбрали модель машины - {user_data["user_model"]}')
+    await callback.message.edit_text(
+        "Теперь выберите серию:",
+        reply_markup=await kb.inline_series_with_publish_year_buttons(state)
+    )
 
 
 @router.callback_query(F.data.startswith("series_year_"))
 async def series(callback: CallbackQuery, state: FSMContext):
     await state.set_state(User_Dashcam.user_series)
-    await state.update_data(user_series = callback.data.split("_")[-1])
+    await state.update_data(user_series=callback.data.split("_")[-1])
     user_data = await state.get_data()
     try:
         model = int(user_data["user_model"])
     except Exception as e:
         model = user_data["user_model"]
-    await callback.answer(f"Вы выбрали такую серию машины - {user_data["user_series"]}")
+    await callback.answer(f'Вы выбрали такую серию машины - {user_data["user_series"]}')
     found_dashcam = kb.fetch_factory(user_data["user_marque"], model, user_data["user_series"])
     dashcam_name, photo_link_V1, photo_link_V2, photo_link_V3 = found_dashcam[0]
     photo_links = [link for link in [photo_link_V1, photo_link_V2, photo_link_V3] if link]
-    await state.update_data(user_dashcam = dashcam_name)
-    await state.update_data(photo_links = photo_links)
-    await state.update_data(current_index = 0)
+    await state.update_data(user_dashcam=dashcam_name)
+    await state.update_data(photo_links=photo_links)
+    await state.update_data(current_index=0)
     
     if len(photo_links) == 1:
-        await state.update_data(user_photo_link = photo_links[0])
-        await state.update_data(user_choice = "Версия 1")
+        await state.update_data(user_photo_link=photo_links[0])
+        await state.update_data(user_choice="Версия 1")
         await callback.message.delete()
         await callback.message.answer_photo(
-            photo = photo_links[0],
-            caption = f"<b>Отлично!</b>\nВам подходит такой регистратор:\nНазвание: <b>{dashcam_name}</b>\nВерсия: <b>1</b>\n"
-                    f'Свяжитесь с нами для оформления заказа.\nТелефон: <a href="tel:+78745168742">+7 (874) 516-87-42</a>\n'
-                    "Telegram - @lorem_ipsum",
-            parse_mode = "HTML"
+            photo=photo_links[0],
+            caption=f"<b>Отлично!</b>\nВам подходит такой регистратор:\nНазвание: <b>{dashcam_name}</b>\nВерсия: <b>1</b>\n"
+                   f'Свяжитесь с нами для оформления заказа.\nТелефон: <a href="tel:+78745168742">+7 (874) 516-87-42</a>\n'
+                   "Telegram - @lorem_ipsum",
+            parse_mode="HTML"
         )
         await callback.answer()
         await state.clear()
@@ -94,11 +98,11 @@ async def series(callback: CallbackQuery, state: FSMContext):
         await state.update_data(user_photo_link=current_photo)
         await callback.message.delete()
         await callback.message.answer_photo(
-            photo = current_photo,
-            caption = f"<b>{version}</b>\nНазвание: <b>{dashcam_name}</b>\n"
+            photo=current_photo,
+            caption=f"<b>{version}</b>\nНазвание: <b>{dashcam_name}</b>\n"
                     f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
-            parse_mode = "HTML",
-            reply_markup = await kb.inline_first_photo_link_buttons(state)
+            parse_mode="HTML",
+            reply_markup=await kb.inline_first_photo_link_buttons(state)
         )
 
 
