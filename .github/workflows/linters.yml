@@ -1,0 +1,34 @@
+name: Linters
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install lint dependencies
+        run: |
+          pip install flake8 black ruff isort
+
+      - name: Run flake8
+        run: flake8 . 
+
+      - name: Run black (check mode)
+        run: black --check .
+
+      - name: Run ruff
+        run: ruff check .
+
+      - name: Run isort (check mode)
+        run: isort . --check-only --diff
