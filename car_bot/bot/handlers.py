@@ -121,11 +121,11 @@ async def next_photo(callback: CallbackQuery, state: FSMContext):
         await state.update_data(user_photo_link=current_photo)
         await callback.message.delete()
         await callback.message.answer_photo(
-            photo=current_photo,
-            caption=f"<b>{version}</b>\nНазвание: <b>{user_data['user_dashcam']}</b>\n"
+            photo = current_photo,
+            caption = f'<b>{version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n'
                     f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
-            parse_mode="HTML",
-            reply_markup=await kb.inline_next_photo_link_buttons(state)
+            parse_mode = "HTML",
+            reply_markup = await kb.inline_next_photo_link_buttons(state)
         )
     else:
         await callback.answer("Это последняя фотография!")
@@ -201,9 +201,9 @@ async def back_to_previous_photo(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await callback.message.answer_photo(
             photo=current_photo,
-            caption=f"<b>{version}</b>\nНазвание: <b>{user_data['user_dashcam']}</b>\n"
+            caption = f"<b>{version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n"
                     f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
-            parse_mode="HTML",
+            parse_mode = "HTML",
             reply_markup=await kb.inline_first_photo_link_buttons(state)
         )
     else:

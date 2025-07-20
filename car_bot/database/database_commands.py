@@ -16,7 +16,7 @@ def parsing_data():
         "dashcam, photo_link_V1, photo_link_V2, photo_link_V3)"
     )
     file_to_read = openpyxl.load_workbook(
-        FULL_EXCEL_TABLE_NAME, 
+        FULL_EXCEL_TABLE_NAME,
         data_only=True
     )
     sheet = file_to_read["Новый"]
@@ -36,7 +36,6 @@ def parsing_data():
                         break
             if all_empty:
                 continue
-        
         cursor.execute(
             "INSERT INTO dashcams VALUES (?, ?, ?, ?, ?, ?, ?);",
             (data[0], data[1], data[2], data[3], data[4], data[5], data[6])
@@ -49,20 +48,18 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
     connect = sqlite3.connect(FULL_DB_NAME)
     cursor = connect.cursor()
     return_array = []
-    
     # fetch marque
     if (
-        marque_option == "marque" and 
-        model_option is None and 
+        marque_option == "marque" and
+        model_option is None and
         series_publish_year_option is None
     ):
         cursor.execute("SELECT marque FROM dashcams")
         return_array = [row[0] for row in cursor.fetchall()]
-    
     # fetch model
     elif (
-        marque_option is not None and 
-        model_option == "model" and 
+        marque_option is not None and
+        model_option == "model" and
         series_publish_year_option is None
     ):
         cursor.execute(
@@ -70,11 +67,10 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option,)
         )
         return_array = [row[0] for row in cursor.fetchall()]
-    
-    # fetch series and publish_year
+    # fetch series and publish year
     elif (
-        marque_option is not None and 
-        model_option is not None and 
+        marque_option is not None and
+        model_option is not None and
         series_publish_year_option == "series_with_publish_year"
     ):
         cursor.execute(
@@ -83,11 +79,10 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option, model_option)
         )
         return_array = [row[0] for row in cursor.fetchall()]
-    
     # fetch dashcam and photos
     elif (
-        marque_option is not None and 
-        model_option is not None and 
+        marque_option is not None and
+        model_option is not None and
         series_publish_year_option is not None
     ):
         cursor.execute(
@@ -97,7 +92,6 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
             (marque_option, model_option, series_publish_year_option)
         )
         return_array = [row for row in cursor.fetchall()]
-    
     connect.commit()
     connect.close()
     return return_array

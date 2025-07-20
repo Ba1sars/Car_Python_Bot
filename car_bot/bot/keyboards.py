@@ -39,7 +39,7 @@ async def inline_model_buttons(state: FSMContext):
 async def inline_series_with_publish_year_buttons(state: FSMContext):
     keyboard = InlineKeyboardBuilder()
     user_data = await state.get_data()
-    try: 
+    try:
         model = int(user_data["user_model"])
     except Exception:
         model = user_data["user_model"]
