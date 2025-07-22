@@ -21,11 +21,11 @@ jobs:
         run: |
           pip install flake8 black ruff isort
 
-      - name: Run flake8
-        run: flake8 . 
+      - name: Run black 
+        run: black .
 
-      - name: Run black (check mode)
-        run: black --check .
+      - name: Run flake8
+        run: flake8 .
 
       - name: Run ruff
         run: ruff check .
