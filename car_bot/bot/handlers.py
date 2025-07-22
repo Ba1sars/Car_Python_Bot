@@ -68,7 +68,7 @@ async def series(callback: CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
     try:
         model = int(user_data["user_model"])
-    except Exception as e:
+    except Exception:
         model = user_data["user_model"]
     await callback.answer(f'Вы выбрали такую серию машины - {user_data["user_series"]}')
     found_dashcam = kb.fetch_factory(
