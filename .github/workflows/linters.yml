@@ -24,8 +24,8 @@ jobs:
       - name: Run black 
         run: black .
 
-      - name: Run flake8
-        run: flake8 .
+      - name: Run flake8 (ignoring E501 error)
+        run: flake8 --ignore=E501 .
 
       - name: Run ruff
         run: ruff check .

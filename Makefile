@@ -9,3 +9,6 @@ bot:
 
 parsing:
 	poetry run parsing
+
+black:
+	poetry run black .
