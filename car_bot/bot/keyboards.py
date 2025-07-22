@@ -1,7 +1,8 @@
+from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 from car_bot.database.database_commands import fetch_factory
-from aiogram.fsm.context import FSMContext
 
 marque_array = set([i for i in fetch_factory("marque", None, None) if i])
 

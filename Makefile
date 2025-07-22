@@ -12,3 +12,6 @@ parsing:
 
 black:
 	poetry run black .
+
+isort:
+	poetry run isort .

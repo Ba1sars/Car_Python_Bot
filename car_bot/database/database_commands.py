@@ -1,7 +1,8 @@
 import sqlite3
-import openpyxl
-from car_bot.config import DB_NAME, EXCEL_TABLE_NAME
 
+import openpyxl
+
+from car_bot.config import DB_NAME, EXCEL_TABLE_NAME
 
 FULL_DB_NAME = "car_bot/database/" + DB_NAME
 FULL_EXCEL_TABLE_NAME = "car_bot/database/" + EXCEL_TABLE_NAME
