@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "car_bot"
-version = "0.1.0"
+version = "0.1.1"
 description = "Test bot for easy selling dashcam for various cars"
 authors = ["Ba1sars"]
 readme = "README.md"

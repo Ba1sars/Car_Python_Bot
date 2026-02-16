@@ -13,7 +13,11 @@ dp = Dispatcher()
 
 async def set_bot_command():
     commands = [
-        BotCommand(command="/start", description="Запускает бота"),
+        BotCommand(command="/finddashcam", description="Подбор видео регистратора"),
+        BotCommand(command="/sale", description="Акции в магазине"),
+        BotCommand(command="/registration", description="Запись на установку"),
+        BotCommand(command="/support", description="Техническая поддержка"),
+        BotCommand(command="/contacts", description="Как связаться с нами"),
         BotCommand(command="/howareyou", description="Бот ответит как у него дела"),
     ]
     await bot.set_my_commands(commands)

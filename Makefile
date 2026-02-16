@@ -15,3 +15,6 @@ black:
 
 isort:
 	poetry run isort .
+
+flake:
+	poetry run flake8 --ignore=E501,W503 .
