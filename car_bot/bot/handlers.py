@@ -104,8 +104,7 @@ async def series(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await callback.message.answer_photo(
             photo=photo_links[0],
-            caption=f"<b>Отлично!</b>\nВам подходит такой регистратор:\nНазвание - <b>{
-                dashcam_name}</b>\nВерсия - <b>1</b>\n"
+            caption=f"<b>Отлично!</b>\nВам подходит такой регистратор:\nНазвание - <b>{dashcam_name}</b>\nВерсия - <b>1</b>\n",
             parse_mode="HTML",
         )
         await callback.answer()
