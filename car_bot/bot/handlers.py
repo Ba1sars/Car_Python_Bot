@@ -3,12 +3,15 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import CallbackQuery, Message, FSInputFile
+from aiogram.types import CallbackQuery, FSInputFile, Message
 
-from car_bot.config import * 
+from car_bot.config import (EMAIL, MONJARO_DOC_PATH, MONJARO_VIDEO_PATH,
+                            TEL_NUMBER, TELEGRAMM_TAG, WEB_SITE_LINK,
+                            WEB_SITE_NAME, WHATSAPP_LINK, WHATSAPP_TEL)
 
 VIDEO_FILE_ID = None
 DOC_FILE_ID = None
+
 
 class User_Dashcam(StatesGroup):
     user_marque = State()
@@ -27,8 +30,12 @@ router = Router()
 # START OF START COMMAND BLOCK
 @router.message(Command("start"))
 async def start_command(message: Message):
-    await message.answer("Нажмите на кнопку <b>Меню</b> и выберите нужную вам функцию !",
-                         parse_mode="HTML")
+    await message.answer(
+        "Нажмите на кнопку <b>Меню</b> и выберите нужную вам функцию !",
+        parse_mode="HTML",
+    )
+
+
 # END OF START COMMAND BLOCK
 
 
@@ -36,6 +43,7 @@ async def start_command(message: Message):
 @router.message(Command("howareyou"))
 async def how_to(message: Message):
     await message.answer("Всё замечательно, ведь я вам помогаю !")
+
 
 # END OF HOWAREYOU COMMAND BLOCK
 
@@ -119,7 +127,7 @@ async def series(callback: CallbackQuery, state: FSMContext):
         await callback.message.answer_photo(
             photo=current_photo,
             caption=f"<b>{version}</b>\nНазвание: <b>{dashcam_name}</b>\n"
-            f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
+            f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n"
             f'Свяжитесь с нами для оформления заказа.\nТелефон - <a href = "tel:{TEL_NUMBER}">{TEL_NUMBER}</a>\n'
             f"Telegram - {TELEGRAMM_TAG}\n"
             f"Whatsapp - <a href={WHATSAPP_LINK}>{WHATSAPP_TEL}</a>\n",
@@ -143,8 +151,7 @@ async def next_photo(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await callback.message.answer_photo(
             photo=current_photo,
-            caption=f'<b>{
-                version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n'
+            caption=f'<b>{version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n'
             f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
             parse_mode="HTML",
             reply_markup=await kb.inline_next_photo_link_buttons(state),
@@ -159,8 +166,7 @@ async def chosen_photo_link(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.message.answer_photo(
         photo=user_data["user_photo_link"],
-        caption=f"Отлично!\nВы выбрали регистратор.\nНазвание - <b>{
-            user_data['user_dashcam']}</b>\n<b>{user_data['to_show']}</b>\n"
+        caption=f"Отлично!\nВы выбрали регистратор.\nНазвание - <b>{user_data['user_dashcam']}</b>\n<b>{user_data['to_show']}</b>\n"
         f'Свяжитесь с нами для оформления заказа.\nТелефон - <a href = "tel:{TEL_NUMBER}">{TEL_NUMBER}</a>\n'
         f"Telegram - {TELEGRAMM_TAG}\n"
         f"Whatsapp - <a href={WHATSAPP_LINK}>{WHATSAPP_TEL}</a>\n",
@@ -229,8 +235,7 @@ async def back_to_previous_photo(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await callback.message.answer_photo(
             photo=current_photo,
-            caption=f'<b>{
-                version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n'
+            caption=f'<b>{version}</b>\nНазвание: <b>{user_data["user_dashcam"]}</b>\n'
             f"Вам было подобрано несколько версий одного регистратора.\nВыберите интересующую вас версию.\n",
             parse_mode="HTML",
             reply_markup=await kb.inline_first_photo_link_buttons(state),
@@ -263,28 +268,30 @@ async def reg_start(message: Message):
 # START OF SUPPORT COMMAND BLOCK
 @router.message(Command("support"))
 async def support_start(message: Message):
-    await message.answer("Выберите один из вариантов:",
-                         reply_markup=await kb.start_support_inline())
+    await message.answer(
+        "Выберите один из вариантов:", reply_markup=await kb.start_support_inline()
+    )
+
 
 @router.callback_query(F.data == "monjaro_support_video")
 async def monjaro_video(callback: CallbackQuery):
     global VIDEO_FILE_ID
-    
+
     await callback.answer()
     await callback.message.delete()
-    
+
     if VIDEO_FILE_ID:
         await callback.message.answer_video(
             video=VIDEO_FILE_ID,
             caption="Видео по установке регистратора Geely Monjaro",
-            parse_mode="HTML"
+            parse_mode="HTML",
         )
     else:
         video = FSInputFile(MONJARO_VIDEO_PATH)
         msg = await callback.message.answer_video(
             video=video,
             caption="Видео по установке регистратора Geely Monjaro",
-            parse_mode="HTML"
+            parse_mode="HTML",
         )
         VIDEO_FILE_ID = msg.video.file_id
 
@@ -292,22 +299,22 @@ async def monjaro_video(callback: CallbackQuery):
 @router.callback_query(F.data == "monjaro_support_doc")
 async def monjaro_document(callback: CallbackQuery):
     global DOC_FILE_ID
-    
+
     await callback.answer()
     await callback.message.delete()
-    
+
     if DOC_FILE_ID:
         await callback.message.answer_document(
             document=DOC_FILE_ID,
             caption="PDF инструкция по мобильному приложению SkyCam",
-            parse_mode="HTML"
+            parse_mode="HTML",
         )
     else:
         doc = FSInputFile(MONJARO_DOC_PATH)
         msg = await callback.message.answer_document(
             document=doc,
             caption="PDF инструкция по мобильному приложению SkyCam",
-            parse_mode="HTML"
+            parse_mode="HTML",
         )
         DOC_FILE_ID = msg.document.file_id
 

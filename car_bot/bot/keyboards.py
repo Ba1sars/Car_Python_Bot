@@ -2,8 +2,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from car_bot.database.database_commands import fetch_factory
 from car_bot.config import PROKLADKA_USERNAME
+from car_bot.database.database_commands import fetch_factory
 
 marque_array = set([i for i in fetch_factory("marque", None, None) if i])
 
@@ -79,10 +79,22 @@ async def inline_next_photo_link_buttons(state: FSMContext):
 
 async def start_support_inline():
     keyboard = InlineKeyboardBuilder()
-    keyboard.add(InlineKeyboardButton(text = "Начать диалог с поддержкой",url = f"https://t.me/{PROKLADKA_USERNAME}?start=support"))
-    keyboard.add(InlineKeyboardButton(text = "Видео по установке Monjaro регистратора", callback_data = "monjaro_support_video"))
-    keyboard.add(InlineKeyboardButton(text = "Инструкция по мобильному приложению", callback_data = "monjaro_support_doc"))
+    keyboard.add(
+        InlineKeyboardButton(
+            text="Начать диалог с поддержкой",
+            url=f"https://t.me/{PROKLADKA_USERNAME}?start=support",
+        )
+    )
+    keyboard.add(
+        InlineKeyboardButton(
+            text="Видео по установке Monjaro регистратора",
+            callback_data="monjaro_support_video",
+        )
+    )
+    keyboard.add(
+        InlineKeyboardButton(
+            text="Инструкция по мобильному приложению",
+            callback_data="monjaro_support_doc",
+        )
+    )
     return keyboard.adjust(1).as_markup()
-
-
-

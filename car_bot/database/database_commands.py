@@ -16,8 +16,7 @@ def parsing_data():
         "(marque, model, series_with_publish_year, "
         "dashcam, photo_link_V1, photo_link_V2, photo_link_V3)"
     )
-    file_to_read = openpyxl.load_workbook(
-        FULL_EXCEL_TABLE_NAME, data_only=True)
+    file_to_read = openpyxl.load_workbook(FULL_EXCEL_TABLE_NAME, data_only=True)
     sheet = file_to_read["Новый"]
     for row in range(2, sheet.max_row + 1):
         data = []
@@ -61,8 +60,7 @@ def fetch_factory(marque_option, model_option, series_publish_year_option):
         and model_option == "model"
         and series_publish_year_option is None
     ):
-        cursor.execute(
-            "SELECT model FROM dashcams WHERE marque = ?", (marque_option,))
+        cursor.execute("SELECT model FROM dashcams WHERE marque = ?", (marque_option,))
         return_array = [row[0] for row in cursor.fetchall()]
     # fetch series and publish year
     elif (
